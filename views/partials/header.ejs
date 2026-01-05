@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scatch | Aesthetic Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        scatch: {
+                            black: '#0a0a0a',
+                            dark: '#121212',
+                            card: '#1c1c1c',
+                            purple: '#a855f7',
+                            dim: '#6b21a8'
+                        }
+                    },
+                    boxShadow: {
+                        'neon': '0 0 15px rgba(168, 85, 247, 0.4)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a855f7; }
+    </style>
+</head>
+<body class="bg-scatch-black text-gray-200 font-sans selection:bg-scatch-purple selection:text-white flex flex-col min-h-screen">
+
+    <nav class="w-full h-20 flex items-center justify-between px-10 sticky top-0 z-50 bg-scatch-black/70 backdrop-blur-md border-b border-white/5">
+        
+        <a href="/" class="text-2xl font-bold tracking-tighter">
+            <span class="text-white">SCA</span><span class="text-scatch-purple drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]">TCH</span>
+        </a>
+
+        <div class="hidden md:flex gap-8 text-sm font-medium text-gray-400">
+            <a href="/shop" class="hover:text-white transition-colors">Home</a>
+            <!-- <a href="/shop" class="text-white relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-scatch-purple after:shadow-neon">Shop</a> -->
+            <a href="/collections" class="hover:text-white transition-colors">Collections</a>
+            <a href="/about" class="hover:text-white transition-colors">About</a>
+        </div>
+
+        <div class="flex items-center gap-6">
+            <button class="text-gray-400 hover:text-white transition-colors">
+                <i class="ri-search-line text-xl"></i>
+            </button>
+            <a href="/users/cart" class="text-gray-400 hover:text-white transition-colors relative">
+                <i class="ri-shopping-bag-3-line text-xl"></i>
+                <span class="absolute -top-1 -right-1 h-2 w-2 bg-scatch-purple rounded-full shadow-neon"></span>
+            </a>
+            <a href="/users/profile" class="px-4 py-2 bg-white/5 border border-white/10 rounded-full hover:bg-scatch-purple hover:border-scatch-purple hover:text-white transition-all text-sm font-medium">
+                My Account
+            </a>
+        </div>
+    </nav>
+
+    <main class="flex-grow w-full">

@@ -1,0 +1,143 @@
+<%- include('./partials/header') %>
+<% if(success.length>0){ %>
+        <div id="flash-message" class="absolute top-20 left-1/2 -translate-x-1/2 p-4 rounded-lg bg-blue-600/20 border border-blue-500 text-blue-400 shadow-lg backdrop-blur-md z-50 flex items-center gap-2">
+            <i class="ri-checkbox-circle-line text-lg"></i>
+            <span class="font-medium"><%= success %></span>
+        </div>
+    <% } %>
+
+    <% if(error.length>0){ %>
+        <div id="flash-message" class="absolute top-20 left-1/2 -translate-x-1/2 p-4 rounded-lg bg-red-600/20 border border-red-500 text-red-400 shadow-lg backdrop-blur-md z-50 flex items-center gap-2">
+            <i class="ri-error-warning-line text-lg"></i>
+            <span class="font-medium"><%= error %></span>
+        </div>
+    <% } %>
+    
+<div class="min-h-screen bg-black text-white selection:bg-purple-500 selection:text-white pt-10 pb-20">
+    <div class="container mx-auto px-4 md:px-8 lg:px-12">
+        
+        <div class="mb-8 border-b border-zinc-800 pb-4">
+            <h1 class="text-3xl font-bold tracking-tight text-zinc-100">Account Settings</h1>
+            <p class="text-zinc-500 text-sm mt-1">Update your profile details and security preferences.</p>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-8 relative">
+
+            <div class="w-full lg:w-72 shrink-0 lg:sticky lg:top-24 self-start">
+                
+                <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 mb-6 flex items-center gap-4">
+                    <div class="w-16 h-16 rounded-full bg-zinc-800 flex items-center justify-center border border-zinc-700 overflow-hidden">
+                        <% if (user.picture) { %>
+                            <img src="<%= user.picture %>" alt="<%= user.fullname %>" class="w-full h-full object-cover">
+                        <% } else { %>
+                            <i class="ri-user-3-line text-3xl text-zinc-500"></i>
+                        <% } %>
+                    </div>
+                    <div class="overflow-hidden">
+                        <h2 class="font-bold text-lg truncate" title="<%= user.fullname %>"><%= user.fullname %></h2>
+                        <p class="text-sm text-zinc-500 truncate" title="<%= user.email %>"><%= user.email %></p>
+                    </div>
+                </div>
+
+                <nav class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+                    <div class="flex flex-col text-sm">
+                        <a href="/users/profile" class="flex items-center gap-3 px-6 py-4 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200 transition-colors border-l-[3px] border-transparent">
+                            <i class="ri-dashboard-line text-lg"></i>
+                            Dashboard Overview
+                        </a>
+                        <a href="/users/orders" class="flex items-center gap-3 px-6 py-4 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200 transition-colors border-l-[3px] border-transparent">
+                            <i class="ri-box-3-line text-lg"></i>
+                            My Orders
+                        </a>
+                        <a href="/users/cart" class="flex items-center gap-3 px-6 py-4 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200 transition-colors border-l-[3px] border-transparent">
+                            <i class="ri-shopping-cart-line text-lg"></i>
+                            Cart
+                        </a>
+                         
+                        
+                        <a href="/users/settings" class="flex items-center gap-3 px-6 py-4 bg-zinc-800/50 text-purple-400 border-l-[3px] border-purple-500 font-medium">
+                            <i class="ri-settings-4-line text-lg"></i>
+                            Settings
+                        </a>
+
+                        <a href="/users/logout" class="flex items-center gap-3 px-6 py-5 text-red-400 hover:bg-red-950/30 hover:text-red-300 transition-colors border-t border-zinc-800 mt-2">
+                            <i class="ri-logout-box-r-line text-lg"></i>
+                            Logout
+                        </a>
+                    </div>
+                </nav>
+            </div>
+
+            <div class="flex-grow flex flex-col gap-8">
+
+                <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 md:p-8">
+                    <h2 class="text-xl font-bold mb-6 text-zinc-200">Profile Picture</h2>
+                    
+                    <form action="/users/update-picture" method="POST" class="flex flex-col md:flex-row items-start md:items-center gap-6">
+                        
+                        <div class="relative group shrink-0">
+                            <div class="w-24 h-24 rounded-full bg-black border-2 border-zinc-700 overflow-hidden flex items-center justify-center">
+                                <% if (user.picture) { %>
+                                    <img src="<%= user.picture %>" class="w-full h-full object-cover">
+                                <% } else { %>
+                                    <i class="ri-user-smile-line text-4xl text-zinc-600"></i>
+                                <% } %>
+                            </div>
+                        </div>
+
+                        <div class="flex-grow w-full">
+                            <label class="block text-xs uppercase tracking-wider text-zinc-500 mb-2 font-bold">Profile picture URL</label>
+                            <input type="text" name="image" value="<%= user.picture || '' %>" placeholder="https://example.com/my-photo.jpg"
+                                class="w-full bg-black border border-zinc-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600 transition-all placeholder-zinc-700 mb-2">
+                            
+                            <p class="text-xs text-zinc-500 mb-3">Paste a direct link to your image (JPG, PNG).</p>
+                            
+                            <button type="submit" class="w-fit text-xs font-bold text-white bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 px-4 py-3 rounded-lg transition-colors">
+                                Update Picture
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 md:p-8">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl font-bold text-zinc-200">Personal Information</h2>
+                    </div>
+
+                    <form action="/users/update-profile" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="col-span-1">
+                            <label class="block text-xs uppercase tracking-wider text-zinc-500 mb-2 font-bold">Full Name</label>
+                            <input type="text" name="fullname" value="<%= user.fullname %>" 
+                                class="w-full bg-black border border-zinc-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600 transition-all placeholder-zinc-700">
+                        </div>
+
+                        <div class="col-span-1">
+                            <label class="block text-xs uppercase tracking-wider text-zinc-500 mb-2 font-bold">Phone Number</label>
+                            <input type="tel" name="contact" value="<%= user.contact || '' %>" placeholder="+91 00000 00000"
+                                class="w-full bg-black border border-zinc-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600 transition-all placeholder-zinc-700">
+                        </div>
+
+                        <div class="col-span-1 md:col-span-2">
+                            <label class="block text-xs uppercase tracking-wider text-zinc-500 mb-2 font-bold">Email Address</label>
+                            <div class="relative">
+                                <input type="email" value="<%= user.email %>" disabled
+                                    class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-3 text-zinc-500 cursor-not-allowed">
+                                <i class="ri-lock-line absolute right-4 top-1/2 -translate-y-1/2 text-zinc-600"></i>
+                            </div>
+                            <p class="text-[10px] text-zinc-600 mt-1 ml-1">Email address cannot be changed for security reasons.</p>
+                        </div>
+
+                        <div class="col-span-1 md:col-span-2 flex justify-end mt-2">
+                            <button type="submit" class="bg-white text-black hover:bg-purple-500 hover:text-white px-6 py-3 rounded-lg font-bold text-sm transition-all shadow-lg hover:shadow-purple-900/20">
+                                Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('./partials/footer') %>

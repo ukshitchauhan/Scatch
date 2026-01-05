@@ -1,0 +1,130 @@
+<%- include('./partials/admin_header') %>
+
+<div class="min-h-screen bg-zinc-900 text-white flex flex-col font-sans selection:bg-purple-500 selection:text-white">
+    
+    <div class="container mx-auto px-4 md:px-10 py-10 flex flex-col md:flex-row gap-10">
+        
+        <div class="w-full md:w-[20%] flex flex-col items-start pt-4 border-r border-zinc-700/30 min-h-[80vh]">
+            <h3 class="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-6 px-3">Admin Panel</h3>
+            <div class="flex flex-col gap-2 w-full pr-4">
+                <a class="flex items-center gap-3 w-full py-3 px-4 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-all" href="/owners/dashboard">
+                    <i class="ri-dashboard-line"></i> Dashboard
+                </a>
+                <a class="flex items-center gap-3 w-full py-3 px-4 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-all" href="/owners/products">
+                    <i class="ri-box-3-line"></i> All Products
+                </a>
+                <a class="flex items-center gap-3 w-full py-3 px-4 text-white bg-purple-600/20 border-l-2 border-purple-500 font-medium rounded-r-lg transition-all" href="/owners/orders">
+                    <i class="ri-file-list-3-line"></i> Orders
+                </a>
+            </div>
+        </div>
+
+        <main class="w-full md:w-[80%]">
+            
+            <div class="mb-8 flex items-center gap-4">
+                <a href="/owners/orders" class="w-10 h-10 flex items-center justify-center rounded-full bg-zinc-800 border border-zinc-700 text-zinc-400 hover:text-white hover:border-zinc-500 transition-all">
+                    <i class="ri-arrow-left-line"></i>
+                </a>
+                <div>
+                    <h1 class="text-2xl font-bold">Order Details</h1>
+                    <p class="text-zinc-400 text-sm">ID: #<%= order._id %></p>
+                </div>
+            </div>
+
+            <div class="flex flex-col xl:flex-row gap-6">
+
+                <div class="w-full xl:w-[65%] flex flex-col gap-6">
+                    <div class="bg-zinc-800 rounded-xl border border-zinc-700/50 overflow-hidden">
+                        <div class="px-6 py-4 border-b border-zinc-700/50 bg-zinc-900/30">
+                            <h2 class="font-bold text-zinc-200">Order Items</h2>
+                        </div>
+                        <div class="p-6 flex flex-col gap-4">
+                            <% order.products.forEach(function(item) { %>
+                                <div class="flex items-start gap-4 p-4 bg-zinc-900/50 rounded-lg border border-zinc-700/30">
+                                    <div class="w-20 h-20 bg-zinc-800 rounded-md overflow-hidden flex-shrink-0 border border-zinc-700">
+                                        <img class="w-full h-full object-cover" 
+                                             src="<%= item.product.image %>" 
+                                             alt="<%= item.product.name %>">
+                                    </div>
+                                    <div class="flex-grow">
+                                        <h3 class="font-bold text-zinc-200 text-lg"><%= item.product.name %></h3>
+                                        <p class="text-sm text-zinc-500">Category: <%= item.product.category || 'General' %></p>
+                                        <p class="text-sm text-zinc-400 mt-2">Qty: <span class="text-white font-bold"><%= item.quantity %></span></p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-purple-400 font-bold text-lg">₹<%= item.product.price %></p>
+                                    </div>
+                                </div>
+                            <% }) %>
+                        </div>
+                        <div class="px-6 py-4 bg-zinc-900/30 border-t border-zinc-700/50 flex justify-between items-center">
+                            <span class="text-zinc-400">Total Amount</span>
+                            <span class="text-2xl font-bold text-white">₹<%= order.totalAmount %></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-full xl:w-[35%] flex flex-col gap-6">
+
+                    <div class="bg-zinc-800 rounded-xl border border-zinc-700/50 p-6">
+                        <h2 class="font-bold text-zinc-200 mb-4">Update Status</h2>
+                        <form action="/owners/orders/update-status/<%= order._id %>" method="POST" class="flex flex-col gap-4">
+                            <div class="relative">
+                                <select name="status" class="w-full appearance-none bg-zinc-900 border border-zinc-600 text-white text-sm rounded-lg px-4 py-3 focus:outline-none focus:border-purple-500 cursor-pointer">
+                                    <option value="Processing" <%= order.status === 'Processing' ? 'selected' : '' %>>Processing</option>
+                                    <option value="Shipped" <%= order.status === 'Shipped' ? 'selected' : '' %>>Shipped</option>
+                                    <option value="Delivered" <%= order.status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
+                                    <option value="Cancelled" <%= order.status === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
+                                </select>
+                                <i class="ri-arrow-down-s-line absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none"></i>
+                            </div>
+                            <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-lg transition-all shadow-lg shadow-purple-900/20">
+                                Update Status
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="bg-zinc-800 rounded-xl border border-zinc-700/50 p-6">
+                        <h2 class="font-bold text-zinc-200 mb-4 border-b border-zinc-700 pb-2">Customer Details</h2>
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 rounded-full bg-zinc-700 flex items-center justify-center overflow-hidden border border-zinc-600">
+                                <% if(order.user.picture) { %>
+                                    <img src="<%= order.user.picture %>" class="w-full h-full object-cover">
+                                <% } else { %>
+                                    <i class="ri-user-line text-zinc-400"></i>
+                                <% } %>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-white"><%= order.user.fullname %></h3>
+                                <p class="text-xs text-zinc-500">Customer</p>
+                            </div>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3 text-sm text-zinc-400">
+                                <i class="ri-mail-line"></i> <%= order.user.email %>
+                            </div>
+                            <div class="flex items-center gap-3 text-sm text-zinc-400">
+                                <i class="ri-phone-line"></i> <%= order.user.contact || 'No contact provided' %>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-zinc-800 rounded-xl border border-zinc-700/50 p-6">
+                        <h2 class="font-bold text-zinc-200 mb-4 border-b border-zinc-700 pb-2">Shipping Address</h2>
+                        <% if (order.address) { %>
+                            <p class="text-sm text-zinc-300 leading-relaxed">
+                                <%= order.address %>
+                            </p>
+                        <% } else { %>
+                            <p class="text-sm text-zinc-500 italic">No shipping address found.</p>
+                        <% } %>
+                    </div>
+
+                </div>
+            </div>
+
+        </main>
+    </div>
+</div>
+
+<%- include('./partials/admin_footer') %>
